@@ -2,41 +2,36 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>锻炼脖子 - 诗歌阅读</title>
     <style>
         body {
             margin: 0;
-            padding: 20px;
+            padding: 40px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: '华文楷体', 'KaiTi', serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            box-sizing: border-box;
         }
         
         .poem-container {
             background: rgba(255, 255, 255, 0.95);
-            padding: 60px 30px;
+            padding: 120px 80px;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
-            max-width: 90vw;
-            box-sizing: border-box;
         }
         
         .poem-line {
-            font-size: clamp(20px, 5vw, 36px);
+            font-size: 36px;
             font-weight: bold;
             color: #2c3e50;
-            width: clamp(60px, 12vw, 100px);
-            min-height: clamp(80px, 20vw, 150px);
-            height: auto;
+            width: 80px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -44,8 +39,6 @@
             margin: 0;
             writing-mode: vertical-lr;
             text-orientation: mixed;
-            padding: 10px 5px;
-            box-sizing: border-box;
         }
         
         .poem-line:hover {
@@ -63,42 +56,22 @@
         .title {
             text-align: center;
             margin-bottom: 40px;
-            font-size: clamp(24px, 6vw, 42px);
+            font-size: 42px;
             color: #2c3e50;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .instruction {
-            position: relative;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.9);
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: clamp(12px, 3vw, 14px);
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 14px;
             color: #7f8c8d;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        #next-poem {
-            margin-top: 20px;
-            padding: 12px 24px;
-            font-size: clamp(14px, 4vw, 18px);
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-family: inherit;
-            touch-action: manipulation;
-        }
-        
-        .poem-content {
-            display: flex;
-            gap: clamp(5px, 2vw, 10px);
-            align-items: center;
-            flex-wrap: nowrap;
-            overflow-x: auto;
         }
     </style>
 </head>
@@ -111,12 +84,12 @@
         <div class="title" id="poem-title">加载中...</div>
         
         <div class="poem-container">
-            <div class="poem-content" id="poem-content">
+            <div class="poem-content" id="poem-content" style="display: flex; gap: 10px; align-items: center;">
                 <div class="loading">正在加载诗词...</div>
             </div>
         </div>
         
-        <button id="next-poem">下一首</button>
+        <button id="next-poem" style="margin-top: 30px; padding: 12px 24px; font-size: 18px; background: #3498db; color: white; border: none; border-radius: 25px; cursor: pointer; font-family: inherit;">下一首</button>
     </div>
 
     <script>
