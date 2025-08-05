@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>锻炼脖子 - 诗歌阅读</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: '华文楷体', 'KaiTi', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .poem-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 120px 80px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .poem-line {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
+            width: 80px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 4px;
+            margin: 0;
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+        }
+        
+        .poem-line:hover {
+            transform: scale(1.05);
+        }
+        
+        .line-down {
+            transform: rotate(90deg);
+        }
+        
+        .line-up {
+            transform: rotate(-90deg);
+        }
+        
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 42px;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .instruction {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 14px;
+            color: #7f8c8d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="instruction">
+        💪 锻炼脖子：左右转动头部阅读每一行诗句
+    </div>
+    
+    <div style="text-align: center;">
+        <div class="title" id="poem-title">加载中...</div>
+        
+        <div class="poem-container">
+            <div class="poem-content" id="poem-content" style="display: flex; gap: 10px; align-items: center;">
+                <div class="loading">正在加载诗词...</div>
+            </div>
+        </div>
+        
+        <button id="next-poem" style="margin-top: 30px; padding: 12px 24px; font-size: 18px; background: #3498db; color: white; border: none; border-radius: 25px; cursor: pointer; font-family: inherit;">下一首</button>
+    </div>
+
+    <script>
+        // 获取诗词的函数
+        function loadPoem() {
+            document.getElementById('poem-title').textContent = '加载中...';
+            document.getElementById('poem-content').innerHTML = '<div class="loading">正在加载诗词...</div>';
+            
+            fetch('https://v1.jinrishici.com/all.json')
+                .then(response => response.json())
+                .then(data => {
+                    const title = data.origin;
+                    const content = data.content;
+                    
+                    // 更新标题
+                    document.getElementById('poem-title').textContent = title;
+                    
+                    // 分割诗句
+                    const lines = content.split(/[，。！？；：]/);
+                    const filteredLines = lines.filter(line => line.trim().length > 0);
+                    
+                    // 生成HTML
+                    let html = '';
+                    filteredLines.slice(0, 4).forEach((line, index) => {
+                        const direction = index % 2 === 0 ? 'line-down' : 'line-up';
+                        html += `<div class="poem-line ${direction}">${line.trim()}</div>`;
+                    });
+                    
+                    // 更新内容
+                    document.getElementById('poem-content').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('获取诗词失败:', error);
+                    // 使用备用诗词
+                    document.getElementById('poem-title').textContent = '静夜思';
+                    document.getElementById('poem-content').innerHTML = `
+                        <div class="poem-line line-down">床前明月光</div>
+                        <div class="poem-line line-up">疑是地上霜</div>
+                        <div class="poem-line line-down">举头望明月</div>
+                        <div class="poem-line line-up">低头思故乡</div>
+                    `;
+                });
+        }
+        
+        // 页面加载时获取第一首诗
+        loadPoem();
+        
+        // 绑定按钮事件
+        document.getElementById('next-poem').addEventListener('click', loadPoem);
+    </script>
+</body>
+</html>
